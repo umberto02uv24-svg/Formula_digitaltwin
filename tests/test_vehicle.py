@@ -1,16 +1,30 @@
-from fdt.vehicle.config import FDT01_BASELINE
+from fdt.vehicle.config import FDT01_BASELINE_V1
+from fdt.vehicle.parameter import ParameterStatus
 
 
 def test_fdt01_baseline_exists():
-    vehicle = FDT01_BASELINE
+    vehicle = FDT01_BASELINE_V1
 
-    assert vehicle.mass > 0
-    assert vehicle.wheelbase > 0
-    assert vehicle.front_track > 0
-    assert vehicle.rear_track > 0
+    assert vehicle.mass.mass.value > 0
+    assert vehicle.geometry.wheelbase > 0
+    assert vehicle.geometry.front_track > 0
+    assert vehicle.geometry.rear_track > 0
 
 
 def test_fdt01_mass_distribution():
-    vehicle = FDT01_BASELINE
+    vehicle = FDT01_BASELINE_V1
 
-    assert 0.0 < vehicle.front_mass_distribution < 1.0
+    distribution = vehicle.mass.front_mass_distribution.value
+
+    assert 0.0 < distribution < 1.0
+
+
+def test_fdt01_mass_traceability():
+    vehicle = FDT01_BASELINE_V1
+
+    mass = vehicle.mass.mass
+
+    assert mass.value == 530.0
+    assert mass.unit == "kg"
+    assert mass.status == ParameterStatus.BENCHMARK
+    assert mass.source != ""
