@@ -67,8 +67,8 @@ class TireParameters:
 class SuspensionParameters:
     """Suspension parameters."""
 
-    front_type: str
-    rear_type: str
+    front_type: EngineeringParameter
+    rear_type: EngineeringParameter
     front_spring_stiffness: EngineeringParameter
     rear_spring_stiffness: EngineeringParameter
     front_motion_ratio: EngineeringParameter
