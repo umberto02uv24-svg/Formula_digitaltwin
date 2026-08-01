@@ -41,6 +41,7 @@ def _extract_parameters(
 def import_vehicle_parameters(
     vehicle: VehicleParameters,
     vehicle_id: str,
+        configuration_version: str,
 ) -> None:
     """Import all engineering parameters of a vehicle into SQLite."""
 
@@ -57,6 +58,7 @@ def import_vehicle_parameters(
             confidence=parameter.confidence.value,
             status=parameter.status.value,
             vehicle_id=vehicle_id,
+            configuration_version=configuration_version,
         )
 
         insert_parameter(record)
