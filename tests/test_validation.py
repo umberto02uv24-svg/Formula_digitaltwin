@@ -2,6 +2,7 @@ import pytest
 
 from fdt.database.models import ParameterRecord
 from fdt.validation.parameters import validate_parameter
+from fdt.validation.range_validator import validate_parameter_range
 
 
 def test_positive_parameter_is_valid():
