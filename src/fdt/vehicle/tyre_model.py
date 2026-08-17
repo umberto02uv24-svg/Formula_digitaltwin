@@ -17,6 +17,23 @@ class TyreModel:
     def __init__(self, parameters: TireParameters) -> None:
         self.parameters = parameters
 
+    def _calculate_combined_slip_factors(
+        self,
+        slip_ratio: float,
+        slip_angle: float,
+        ) -> tuple[float, float]:
+            """Calculate force reduction factors due to combined slip."""
+
+            longitudinal_factor = (
+                1.0 / (1.0 + slip_angle**2) ** 0.5
+            )
+
+            lateral_factor = (
+                1.0 / (1.0 + slip_ratio**2) ** 0.5
+            )
+            return longitudinal_factor, lateral_factor
+
+
     def calculate_forces(
         self,
         vertical_load: float,
@@ -40,6 +57,14 @@ class TyreModel:
             self.parameters.friction_coefficient.value
         )
 
+        reference_vertical_load = (
+            self.parameters.reference_vertical_load.value
+        )
+
+        load_sensitivity_exponent = (
+            self.parameters.load_sensitivity_exponent.value
+        )
+
         if longitudinal_stiffness is None:
             raise ValueError(
                 "Longitudinal tyre stiffness is required."
@@ -59,16 +84,56 @@ class TyreModel:
             raise ValueError(
                 "Tyre friction coefficient must be positive."
             )
+        if reference_vertical_load is None:
+            raise ValueError(
+                "Reference vertical tyre load is required."
+            )
+
+        if reference_vertical_load <= 0:
+            raise ValueError(
+                "Reference vertical tyre load must be positive."
+            )
+
+        if load_sensitivity_exponent is None:
+            raise ValueError(
+                "Tyre load sensitivity exponent is required."
+            )
+
+        if load_sensitivity_exponent < 0:
+            raise ValueError(
+                "Tyre load sensitivity exponent cannot be negative."
+            )
+
+        longitudinal_factor, lateral_factor = (
+            self._calculate_combined_slip_factors(
+                slip_ratio=slip_ratio,
+                slip_angle=slip_angle,
+            )
+        )
 
         longitudinal_force = (
-            longitudinal_stiffness * slip_ratio
+            longitudinal_stiffness
+            * slip_ratio
+            * longitudinal_factor
         )
 
         lateral_force = (
-            -lateral_stiffness * slip_angle
+            -lateral_stiffness
+            * slip_angle
+            * lateral_factor
         )
 
-        maximum_force = friction_coefficient * vertical_load
+        effective_friction_coefficient = (
+            friction_coefficient
+            * (
+                vertical_load / reference_vertical_load
+            ) ** (-load_sensitivity_exponent)
+        )
+
+        maximum_force = (
+            effective_friction_coefficient
+            * vertical_load
+        )
 
         total_force = (
             longitudinal_force**2

@@ -240,6 +240,21 @@ FDT01_BASELINE_V1 = VehicleParameters(
         confidence=ConfidenceLevel.LOW,
         status=ParameterStatus.TBD,
     ),
+    reference_vertical_load=EngineeringParameter(
+    value=None,
+    unit="N",
+    source="TBD",
+    confidence=ConfidenceLevel.LOW,
+    status=ParameterStatus.TBD,
+    ),
+
+    load_sensitivity_exponent=EngineeringParameter(
+    value=None,
+    unit="-",
+    source="TBD",
+    confidence=ConfidenceLevel.LOW,
+    status=ParameterStatus.TBD,
+    ),
 ),
 
     suspension=SuspensionParameters(

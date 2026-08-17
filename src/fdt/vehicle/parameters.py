@@ -61,6 +61,8 @@ class TireParameters:
     longitudinal_stiffness: EngineeringParameter
     lateral_stiffness: EngineeringParameter
     friction_coefficient: EngineeringParameter
+    reference_vertical_load: EngineeringParameter
+    load_sensitivity_exponent: EngineeringParameter
 
 
 @dataclass
