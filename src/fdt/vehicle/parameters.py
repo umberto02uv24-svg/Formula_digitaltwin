@@ -36,6 +36,7 @@ class PowertrainParameters:
     maximum_torque: EngineeringParameter
     maximum_engine_speed: EngineeringParameter
     number_of_gears: EngineeringParameter
+    gear_ratios: EngineeringParameter
     final_drive_ratio: EngineeringParameter
     drivetrain_efficiency: EngineeringParameter
 

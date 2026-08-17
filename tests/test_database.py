@@ -1,4 +1,5 @@
 import fdt.database.connection as database_connection
+import pytest
 
 from fdt.database.importer import import_vehicle_parameters
 from fdt.database.models import ParameterRecord,ConfigurationRecord
@@ -11,6 +12,40 @@ from fdt.database.repository import (
 )
 from fdt.vehicle.config import FDT01_BASELINE_V1
 
+
+
+def test_array_parameter_insertion(tmp_path, monkeypatch):
+    """Check that array engineering parameters can be stored."""
+
+    test_database_path = tmp_path / "test_fdt.db"
+
+    monkeypatch.setattr(
+        database_connection,
+        "DATABASE_PATH",
+        test_database_path,
+    )
+
+    initialize_database()
+
+    parameter = ParameterRecord(
+        name="gear_ratios",
+        value=[3.50, 2.10, 1.50, 1.20, 1.00, 0.85],
+        unit="-",
+        source="F4 benchmark",
+        confidence="Medium",
+        status="Benchmark",
+        vehicle_id="TEST",
+        configuration_version="1.0",
+    )
+
+    insert_parameter(parameter)
+
+    parameters = get_parameters("TEST", "1.0")
+
+    assert len(parameters) == 1
+    assert parameters[0].value == pytest.approx(
+        [3.50, 2.10, 1.50, 1.20, 1.00, 0.85]
+    )
 
 def test_database_initialization(tmp_path, monkeypatch):
     """Check that the database can be initialized."""

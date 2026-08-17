@@ -25,7 +25,7 @@ class ConfidenceLevel(Enum):
 class EngineeringParameter:
     """Engineering parameter with traceability information."""
 
-    value: Optional[float]
+    value: Optional[float | list[float]]
     unit: str
     source: str
     confidence: ConfidenceLevel

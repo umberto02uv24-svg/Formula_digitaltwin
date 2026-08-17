@@ -1,5 +1,6 @@
 from .connection import get_connection
 from .models import ParameterRecord,ConfigurationRecord
+import json
 
 
 def initialize_database() -> None:
@@ -12,7 +13,7 @@ def initialize_database() -> None:
         CREATE TABLE IF NOT EXISTS parameters (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            value REAL,
+            value TEXT,
             unit TEXT NOT NULL,
             source TEXT NOT NULL,
             confidence TEXT NOT NULL,
@@ -70,7 +71,7 @@ def insert_parameter(parameter: ParameterRecord) -> None:
         """,
         (
             parameter.name,
-            parameter.value,
+            _serialize_parameter_value(parameter.value),
             parameter.unit,
             parameter.source,
             parameter.confidence,
@@ -116,7 +117,7 @@ def get_parameters(
     return [
         ParameterRecord(
             name=row[0],
-            value=row[1],
+            value=_deserialize_parameter_value(row[1]),
             unit=row[2],
             source=row[3],
             confidence=row[4],
@@ -197,3 +198,27 @@ def get_configuration(
         description=row[3],
         parent_version=row[4],
     )
+
+def _serialize_parameter_value(
+    value: float | list[float] | None,
+) -> float | str | None:
+    """Serialize parameter values for SQLite storage."""
+
+    if isinstance(value, list):
+        return json.dumps(value)
+
+    return value
+
+
+def _deserialize_parameter_value(
+    value: float | str | None,
+) -> float | list[float] | None:
+    """Deserialize parameter values retrieved from SQLite."""
+
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return value
+
+    return value
