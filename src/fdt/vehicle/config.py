@@ -307,6 +307,37 @@ FDT01_BASELINE_V1 = VehicleParameters(
         confidence=ConfidenceLevel.LOW,
         status=ParameterStatus.TBD,
     ),
+    front_damping_compression=EngineeringParameter(
+        value=3000.0,
+        unit="N*s/m",
+        source="Baseline assumption",
+        confidence=ConfidenceLevel.MEDIUM,
+        status=ParameterStatus.TBD,
+    ),
+
+    front_damping_rebound=EngineeringParameter(
+        value=4000.0,
+        unit="N*s/m",
+        source="Baseline assumption",
+        confidence=ConfidenceLevel.MEDIUM,
+        status=ParameterStatus.TBD,
+    ),
+
+    rear_damping_compression=EngineeringParameter(
+        value=3500.0,
+        unit="N*s/m",
+        source="Baseline assumption",
+        confidence=ConfidenceLevel.MEDIUM,
+        status=ParameterStatus.TBD,
+    ),
+
+    rear_damping_rebound=EngineeringParameter(
+        value=4500.0,
+        unit="N*s/m",
+        source="Baseline assumption",
+        confidence=ConfidenceLevel.MEDIUM,
+        status=ParameterStatus.TBD,
+    ),
 ),
 
     brakes=BrakeParameters(

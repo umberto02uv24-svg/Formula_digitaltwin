@@ -76,7 +76,10 @@ class SuspensionParameters:
     rear_spring_stiffness: EngineeringParameter
     front_motion_ratio: EngineeringParameter
     rear_motion_ratio: EngineeringParameter
-
+    front_damping_compression: EngineeringParameter
+    front_damping_rebound: EngineeringParameter
+    rear_damping_compression: EngineeringParameter
+    rear_damping_rebound: EngineeringParameter
 
 @dataclass
 class BrakeParameters:
