@@ -167,31 +167,42 @@ FDT01_BASELINE_V1 = VehicleParameters(
     ),
 ),
    aerodynamics=AerodynamicParameters(
-    reference_area=EngineeringParameter(
-        value=None,
+    air_density=EngineeringParameter(
+        value=1.225,
+        unit="kg/m^3",
+        source="Standard atmosphere",
+        confidence=ConfidenceLevel.HIGH,
+        status=ParameterStatus.VALIDATED,
+    ),
+
+    frontal_area=EngineeringParameter(
+        value=1.2,
         unit="m^2",
-        source="TBD",
-        confidence=ConfidenceLevel.LOW,
+        source="Baseline assumption",
+        confidence=ConfidenceLevel.MEDIUM,
         status=ParameterStatus.TBD,
     ),
+
     drag_coefficient=EngineeringParameter(
-        value=None,
+        value=0.9,
         unit="-",
-        source="TBD",
+        source="Baseline assumption",
         confidence=ConfidenceLevel.LOW,
         status=ParameterStatus.TBD,
     ),
+
     lift_coefficient=EngineeringParameter(
-        value=None,
+        value=1.5,
         unit="-",
-        source="TBD",
+        source="Baseline assumption",
         confidence=ConfidenceLevel.LOW,
         status=ParameterStatus.TBD,
     ),
-    aero_balance=EngineeringParameter(
-        value=None,
-        unit="%",
-        source="TBD",
+
+    front_aero_balance=EngineeringParameter(
+        value=0.45,
+        unit="-",
+        source="Baseline assumption",
         confidence=ConfidenceLevel.LOW,
         status=ParameterStatus.TBD,
     ),

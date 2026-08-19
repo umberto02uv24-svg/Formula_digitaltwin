@@ -40,15 +40,15 @@ class PowertrainParameters:
     final_drive_ratio: EngineeringParameter
     drivetrain_efficiency: EngineeringParameter
 
-
 @dataclass
 class AerodynamicParameters:
     """Aerodynamic parameters."""
 
-    reference_area: EngineeringParameter
+    air_density: EngineeringParameter
+    frontal_area: EngineeringParameter
     drag_coefficient: EngineeringParameter
     lift_coefficient: EngineeringParameter
-    aero_balance: EngineeringParameter
+    front_aero_balance: EngineeringParameter
 
 
 @dataclass
