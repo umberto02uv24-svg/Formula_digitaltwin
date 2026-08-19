@@ -309,3 +309,41 @@ def test_front_aero_balance_below_zero_is_rejected():
         match="Front aero balance must be between 0 and 1",
     ):
         model.calculate_forces(velocity=50.0)
+
+def test_zero_front_aero_balance_puts_all_downforce_rear():
+    """Zero front aero balance must put all downforce at the rear."""
+
+    vehicle = copy.deepcopy(FDT01_BASELINE_V1)
+    vehicle.aerodynamics.front_aero_balance.value = 0.0
+
+    model = AeroModel(vehicle.aerodynamics)
+
+    result = model.calculate_forces(velocity=50.0)
+
+    assert result.front_downforce == pytest.approx(0.0)
+    assert result.rear_downforce == pytest.approx(result.downforce)
+
+def test_full_front_aero_balance_puts_all_downforce_front():
+    """Full front aero balance must put all downforce at the front."""
+
+    vehicle = copy.deepcopy(FDT01_BASELINE_V1)
+    vehicle.aerodynamics.front_aero_balance.value = 1.0
+
+    model = AeroModel(vehicle.aerodynamics)
+
+    result = model.calculate_forces(velocity=50.0)
+
+    assert result.front_downforce == pytest.approx(result.downforce)
+    assert result.rear_downforce == pytest.approx(0.0)
+
+def test_aero_load_is_conserved():
+    """Front and rear aero loads must equal total downforce."""
+
+    model = create_test_aero_model()
+
+    result = model.calculate_forces(velocity=75.0)
+
+    assert (
+        result.front_downforce
+        + result.rear_downforce
+    ) == pytest.approx(result.downforce)
